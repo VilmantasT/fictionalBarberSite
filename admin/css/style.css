@@ -1,0 +1,217 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  font-family: Arial;
+  background: #22699c;
+  /* line-height: 1.7; */
+}
+
+/* utilities */
+
+.text-center {
+  text-align: center;
+}
+
+.l-heading {
+  font-size: 1.7rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+
+.container {
+  background: #fff;
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.btn {
+  display: inline-block;
+  color: #fff;
+  background: #3197e0;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background: #acd5f2;
+  color: #333;
+}
+
+.container h2 {
+    font-size: 2rem;
+  margin: 1.75rem 0;
+  font-weight: lighter;
+}
+
+
+#navigation {
+  display: flex;
+  justify-content: space-between;
+  background: #333;
+  color: #fff;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+}
+
+#navigation ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+#navigation ul li a {
+  color: #fff;
+  padding: 0.75rem;
+  margin: 0 0.25rem;
+}
+
+#navigation ul li a:hover {
+  background: #9d9b9d;
+  border-radius: 5px;
+}
+
+#navigation h1 i {
+  color: #fff;
+}
+
+/* forma */
+
+.form {
+  display: flex;
+  flex-direction: center;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 80%;
+  height: 13.7%;
+  background: #ddd;
+}
+
+.form form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  margin: 1rem 0;
+  border-bottom: 1px dotted #ddd;
+}
+
+.form form .input {
+  display: block;
+  border: #ddd 1px solid;
+  padding: 0.25rem;
+  width: 90%;
+  border-radius: 5px;
+}
+
+.form label {
+  font-size: 1.4rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* reservations table */
+.visits {
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.visits th {
+  background: #3197e0;
+  color: #fff;
+  padding: 0.35rem;
+}
+
+.visits td {
+  padding: 0.55rem;
+  text-align: center;
+}
+
+.visits tr:nth-child(even) {
+  background: #eaf4fb;
+}
+
+.visits td a i {
+  color: red;
+}
+
+.visits tr:hover {
+  background-color: #98cbef;
+}
+
+.visits td i {
+  color: green;
+}
+
+/* times table */
+
+.time_table tr td {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time_table {
+  width: 600px;
+}
+
+.time_table tr:nth-child(even) {
+  background: #eaf4fb;
+}
+
+/* registration form */
+
+.reg_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding: 15px 25px;
+}
+
+.reg_form .form-groups {
+  border-radius: 5px;
+  width: 400px;
+  height: 50%;
+}
+
+.reg_form .form-groups label {
+  display: block;
+  text-align: left;
+  padding: 0.25rem;
+  color: #666;
+  margin: 0.75rem 0;
+}
+
+.reg_form .form-groups input {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 5px;
+}
+
+.reg_form .form-groups select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  padding: 0.75rem;
+  color: #666;
+}
