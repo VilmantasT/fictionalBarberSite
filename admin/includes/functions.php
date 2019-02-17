@@ -20,8 +20,8 @@ function displayTimes($array){
     echo "<table class='time_table'>";
     if (sizeof($array) != sizeof($times)) {
         foreach ($times as $time) {
+            $time = number_format((float)$time, 2, '.', '');
             if (!in_array($time, $array)) {
-                $time = number_format((float)$time, 2, '.', '');
                 echo "<tr><td><p>" . $time . "</p><a class='btn' href='add_reg.php?time=$time'>Rezervuoti</></td></tr>";
             }else{
                 echo "<tr><td><p>$time</p><p style='color: red; padding: 0.75rem'>Rezervuota</p></td></tr>";

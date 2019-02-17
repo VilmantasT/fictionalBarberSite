@@ -39,7 +39,7 @@
                     if (!$count_visit) {
 
                         // update reservations Count
-                        $check_query = "SELECT client_name FROM klientai WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
+                        $check_query = "SELECT * FROM klientai WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
                         $check = mysqli_query($connection, $check_query);
 
                         if (!$check) {
@@ -47,8 +47,16 @@
                         }
 
                         $count_client = mysqli_num_rows($check);
+                        echo $count_client;
 
-                        if ($count_client > 0) {
+                        if (!$count_client) {
+                            // add client if it is not in clients db
+                            $num = 1;
+                            $add_client = "INSERT INTO klientai (client_name, client_surname, visits) ";
+                            $add_client .= "VALUES('$username', '$surname', '$num')";
+
+                            $add_query = mysqli_query($connection, $add_client);
+                        }else{
                             // updates client visits count by one if he is in db
                             $update_query = "UPDATE klientai SET visits = visits + 1 WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
                             $update = mysqli_query($connection, $update_query);
@@ -56,13 +64,6 @@
                             if (!$update) {
                                 die(mysqli_error($connection));
                             }
-                        }else{
-                            // add client if it is not in clients db
-                            $num = 1;
-                            $add_client = "INSERT INTO klientai (client_name, client_surname, visits) ";
-                            $add_client .= "VALUES('$username', '$surname', '$num')";
-
-                            $add_query = mysqli_query($connection, $add_client);
                         }
 
                         // gets client visits count from klientai db
@@ -83,7 +84,7 @@
                             die(mysqli_error($connection));
                         }
 
-                        echo "<p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
+                        echo "<br><br><p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
                     }else{
                         echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href=''>Trinti</a>";
                     }
