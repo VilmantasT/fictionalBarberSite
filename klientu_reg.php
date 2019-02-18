@@ -1,15 +1,5 @@
-<?php session_start() ?>
-<?php include "functions.php" ?>
-<?php include "db.php" ?>
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Netikra kirpykla</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <link rel="stylesheet" href="../css/reg_style.css">
+<?php include "includes/header.php" ?>
+        <link rel="stylesheet" href="css/reg_style.css">
     </head>
     <body>
 
@@ -18,7 +8,7 @@
         <i class="fas fa-cut"></i> KX
     </h1>
         <ul>
-            <li><a href="../index.php">Atgal</a></li>
+            <li><a href="index.php">Atgal</a></li>
         </ul>
 </nav>
 <div id='message'>
@@ -75,32 +65,7 @@
                     if (!$count_visit) {
 
                         // update reservations Count
-                        $check_query = "SELECT * FROM klientai WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
-                        $check = mysqli_query($connection, $check_query);
-
-                        if (!$check) {
-                            die(mysqli_error($connection));
-                        }
-
-                        $count_client = mysqli_num_rows($check);
-                        echo $count_client;
-
-                        if (!$count_client) {
-                            // add client if it is not in clients db
-                            $num = 1;
-                            $add_client = "INSERT INTO klientai (client_name, client_surname, visits) ";
-                            $add_client .= "VALUES('$username', '$surname', '$num')";
-
-                            $add_query = mysqli_query($connection, $add_client);
-                        }else{
-                            // updates client visits count by one if he is in db
-                            $update_query = "UPDATE klientai SET visits = visits + 1 WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
-                            $update = mysqli_query($connection, $update_query);
-
-                            if (!$update) {
-                                die(mysqli_error($connection));
-                            }
-                        }
+                        updateVisitsCount($username, $surname);
 
                         // gets client visits count from klientai db
                         $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";
@@ -129,46 +94,17 @@
                         $res_id = $id_data['id'];
 
                         // set cookies
-                        $id_cookie = "userId";
-                        $id_value = $res_id;
-                        $expiration = time() + (60*60*24*7);
 
-                        setcookie($id_cookie, $id_value, $expiration);
+                        setcookie("userId", $res_id, time() + (60*60*24*7), "/");
+                        setcookie("userName", $username, time() + (60*60*24*7), "/");
+                        setcookie("userSurname", $surname, time() + (60*60*24*7), "/");
+                        setcookie("visitDate", $date, time() + (60*60*24*7), "/");
+                        setcookie("visitTime", $time, time() + (60*60*24*7), "/");
 
+                        echo "<p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
 
-                        $name_cookie = "userName";
-                        $name_value = $username;
-                        $expiration = time() + (60*60*24*7);
-
-                        setcookie($name_cookie, $name_value, $expiration);
-
-                        $surname_cookie = "userSurname";
-                        $surname_value = $surname;
-                        $expiration = time() + (60*60*24*7);
-
-                        setcookie($surname_cookie, $surname_value, $expiration);
-
-                        $date_cookie = "visitDate";
-                        $date_value = $date;
-                        $expiration = time() + (60*60*24*7);
-
-                        setcookie($date_cookie, $date_value, $expiration);
-
-                        $time_cookie = "visitTime";
-                        $time_value = $time;
-                        $expiration = time() + (60*60*24*7);
-
-                        setcookie($time_cookie, $time_value, $expiration);
-                        ?>
-                        <script type="text/javascript">
-                            writeMessage($res_id, $username, $surname);
-                        </script>
-
-
-                        <?php
-                        // echo "<br><br><p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
-
-                    
+                    }else{
+                        echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href='klientu_reg.php'>Trinti</a>";
                     }
                 }
 
@@ -195,7 +131,7 @@
                             foreach ($_SESSION['workers'] as $worker) {
                                 echo "<tr>";
                                 $booked = getBooked($worker, $_SESSION['date']);
-                                displayTimes($booked, $worker);
+                                displayTimesUsers($booked, $worker);
                                 echo "</tr>";
 
                             }
@@ -205,11 +141,11 @@
                             echo "</form>";
 
                         }else{
-                            echo "Atsiprašome , tačiau neturime laiko mašinos";
+                            echo "<p class='message'>Atsiprašome , tačiau neturime laiko mašinos</p>";
                         }
 
                     }else{
-                        echo "<p>Privalote užpildyti visus laukelius!</p>";
+                        echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
                     }
                 }else{ ?>
 
@@ -243,46 +179,9 @@
         $name = $_GET['n'];
         $surname = $_GET['s'];
 
-        $query = "DELETE FROM registracijos WHERE id = $the_id";
-
-        $delete_query = mysqli_query($connection, $query);
-
-        $subtract_visit = "UPDATE klientai SET visits = visits - 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
-
-        $subtract_query = mysqli_query($connection, $subtract_visit);
-
-        // echo "Registracija sekmingai istrinta!";
-        // unset cookies
-        $id_cookie = "userId";
-        $id_value = '';
-        $expiration = time() - 1;
-
-        setcookie($id_cookie, $id_value, $expiration);
 
 
-        $name_cookie = "userName";
-        $name_value = '';
-        $expiration = time() - 1;
-
-        setcookie($name_cookie, $name_value, $expiration);
-
-        $surname_cookie = "userSurname";
-        $surname_value = '';
-        $expiration = time() - 1;
-
-        setcookie($surname_cookie, $surname_value, $expiration);
-
-        $date_cookie = "visitDate";
-        $date_value = '';
-        $expiration = time() - 1;
-
-        setcookie($date_cookie, $date_value, $expiration);
-
-        $time_cookie = "visitTime";
-        $time_value = '';
-        $expiration = time() - 1;
-
-        setcookie($time_cookie, $time_value, $expiration);
+        deleteReservation($the_id, $name, $surname);
 
         header("Location: klientu_reg.php");
     }

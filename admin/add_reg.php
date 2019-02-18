@@ -8,6 +8,7 @@
             <li><a href="index.php">Atgal</a></li>
         </ul>
 </nav>
+
     <div class="container">
 
                 <?php
@@ -39,32 +40,8 @@
                     if (!$count_visit) {
 
                         // update reservations Count
-                        $check_query = "SELECT * FROM klientai WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
-                        $check = mysqli_query($connection, $check_query);
+                        updateVisitsCount($username, $surname);
 
-                        if (!$check) {
-                            die(mysqli_error($connection));
-                        }
-
-                        $count_client = mysqli_num_rows($check);
-                        echo $count_client;
-
-                        if (!$count_client) {
-                            // add client if it is not in clients db
-                            $num = 1;
-                            $add_client = "INSERT INTO klientai (client_name, client_surname, visits) ";
-                            $add_client .= "VALUES('$username', '$surname', '$num')";
-
-                            $add_query = mysqli_query($connection, $add_client);
-                        }else{
-                            // updates client visits count by one if he is in db
-                            $update_query = "UPDATE klientai SET visits = visits + 1 WHERE client_name LIKE '$username' AND client_surname LIKE '$surname' ";
-                            $update = mysqli_query($connection, $update_query);
-
-                            if (!$update) {
-                                die(mysqli_error($connection));
-                            }
-                        }
 
                         // gets client visits count from klientai db
                         $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";
@@ -84,9 +61,9 @@
                             die(mysqli_error($connection));
                         }
 
-                        echo "<br><br><p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
+                        echo "<p class='message'>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
                     }else{
-                        echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href=''>Trinti</a>";
+                        echo "<p class='message'>" . $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href=''>Trinti</a></p>";
                     }
                 }
 
@@ -116,11 +93,11 @@
 
                             displayTimes($_SESSION['laikai']);
                         }else{
-                            echo "Atsiprašome , tačiau neturime laiko mašinos";
+                            echo "<p class='message'>Atsiprašome , tačiau neturime laiko mašinos</p>";
                         }
 
                     }else{
-                        echo "<p>Privalote užpildyti visus laukelius!</p>";
+                        echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
                     }
                 }else{ ?>
 
@@ -143,16 +120,12 @@
                             <?php
 
                             // finds hairdressers names in db and displays as options
+                            $kirpejos = getWorkers();
 
-                            $query = "SELECT * FROM kirpejos";
-
-                            $select_query = mysqli_query($connection, $query);
-
-                            while ($row = mysqli_fetch_assoc($select_query)) {
-                                $name = $row['worker_name'];
-
+                            foreach ($kirpejos as $name) {
                                 echo "<option value='$name'>$name</option>";
                             }
+
                              ?>
                         </select>
                         <input class="btn" type="submit" name="testi" value="Tęsti">

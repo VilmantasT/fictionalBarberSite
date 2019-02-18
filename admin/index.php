@@ -12,15 +12,10 @@
 
 <div class="main">
 
-
-
 <div class="container">
 
             <h2 class="text-center l-heading">Rezervacijų Paieška</h2>
     <div class="form">
-
-         <!-- <a href="kirpeju.php?action=search&look=today">Siandienos</a> </li>
-         <a href="kirpeju.php?action=search&look=tomorrow">Rytoj</a> </li> -->
 
          <form class="" action="" method="post">
              <input class="btn" type="submit" name="today" value="Šiandien">
@@ -76,13 +71,7 @@ if (isset($_GET['delete'])) {
     $name = $_GET['n'];
     $surname = $_GET['s'];
 
-    $query = "DELETE FROM registracijos WHERE id = $the_id";
-
-    $delete_query = mysqli_query($connection, $query);
-
-    $subtract_visit = "UPDATE klientai SET visits = visits - 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
-
-    $subtract_query = mysqli_query($connection, $subtract_visit);
+    deleteReservation($the_id, $name, $surname);
 
     // echo "Registracija sekmingai istrinta!";
 
