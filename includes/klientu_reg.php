@@ -21,7 +21,30 @@
             <li><a href="../index.php">Atgal</a></li>
         </ul>
 </nav>
+<div id='message'>
+
+    <?php
+
+
+    if (isset($_COOKIE["userName"])) {
+        $cookieId = $_COOKIE['userId'];
+        $cookieName = $_COOKIE['userName'];
+        $cookieSurname = $_COOKIE['userSurname'];
+        $cookieDate = $_COOKIE["visitDate"];
+        $cookieTime = $_COOKIE["visitTime"];
+
+        echo "Jūs jau esate užsiregistravęs: " . $cookieDate . " | " . $cookieTime . " <a href='klientu_reg.php?delete=$cookieId&n=$cookieName&s=$cookieSurname'>Trinti</a>";
+
+        }else {
+        $someOne = "";
+        }
+
+     ?>
+
+
+</div>
     <div class="container-reg">
+
 
                 <?php
                 if (isset($_POST['reserve'])) {
@@ -84,22 +107,68 @@
 
                         $visit_query = mysqli_query($connection, $get_visit);
                         $result = mysqli_fetch_assoc($visit_query);
-                        $visit = $result['visits'];
+                        $visits = $result['visits'];
 
                         // resgistration query
 
                         $query = "INSERT INTO registracijos (visits, client_name, client_surname, res_date, res_time, worker) ";
-                        $query .= "VALUES ('$visit', '$username', '$surname', '$date', '$time', '$worker')";
+                        $query .= "VALUES ('$visits', '$username', '$surname', '$date', '$time', '$worker')";
 
                         $reg_query = mysqli_query($connection, $query);
 
                         if (!$reg_query) {
                             die(mysqli_error($connection));
                         }
+                        // get id for get delete assert_options
 
-                        echo "<br><br><p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
-                    }else{
-                        echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href=''>Trinti</a>";
+                        $get_id = "SELECT * FROM registracijos WHERE client_name = '$username' AND client_surname = '$surname' ";
+
+                        $id_query = mysqli_query($connection, $get_id);
+                        $id_data = mysqli_fetch_assoc($id_query);
+
+                        $res_id = $id_data['id'];
+
+                        // set cookies
+                        $id_cookie = "userId";
+                        $id_value = $res_id;
+                        $expiration = time() + (60*60*24*7);
+
+                        setcookie($id_cookie, $id_value, $expiration);
+
+
+                        $name_cookie = "userName";
+                        $name_value = $username;
+                        $expiration = time() + (60*60*24*7);
+
+                        setcookie($name_cookie, $name_value, $expiration);
+
+                        $surname_cookie = "userSurname";
+                        $surname_value = $surname;
+                        $expiration = time() + (60*60*24*7);
+
+                        setcookie($surname_cookie, $surname_value, $expiration);
+
+                        $date_cookie = "visitDate";
+                        $date_value = $date;
+                        $expiration = time() + (60*60*24*7);
+
+                        setcookie($date_cookie, $date_value, $expiration);
+
+                        $time_cookie = "visitTime";
+                        $time_value = $time;
+                        $expiration = time() + (60*60*24*7);
+
+                        setcookie($time_cookie, $time_value, $expiration);
+                        ?>
+                        <script type="text/javascript">
+                            writeMessage($res_id, $username, $surname);
+                        </script>
+
+
+                        <?php
+                        // echo "<br><br><p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
+
+                    
                     }
                 }
 
@@ -164,5 +233,60 @@
                     <?php } ?>
 
     </div>
+    <?php
+
+    // deletes a visit from database
+
+    if (isset($_GET['delete'])) {
+
+        $the_id = $_GET['delete'];
+        $name = $_GET['n'];
+        $surname = $_GET['s'];
+
+        $query = "DELETE FROM registracijos WHERE id = $the_id";
+
+        $delete_query = mysqli_query($connection, $query);
+
+        $subtract_visit = "UPDATE klientai SET visits = visits - 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
+
+        $subtract_query = mysqli_query($connection, $subtract_visit);
+
+        // echo "Registracija sekmingai istrinta!";
+        // unset cookies
+        $id_cookie = "userId";
+        $id_value = '';
+        $expiration = time() - 1;
+
+        setcookie($id_cookie, $id_value, $expiration);
+
+
+        $name_cookie = "userName";
+        $name_value = '';
+        $expiration = time() - 1;
+
+        setcookie($name_cookie, $name_value, $expiration);
+
+        $surname_cookie = "userSurname";
+        $surname_value = '';
+        $expiration = time() - 1;
+
+        setcookie($surname_cookie, $surname_value, $expiration);
+
+        $date_cookie = "visitDate";
+        $date_value = '';
+        $expiration = time() - 1;
+
+        setcookie($date_cookie, $date_value, $expiration);
+
+        $time_cookie = "visitTime";
+        $time_value = '';
+        $expiration = time() - 1;
+
+        setcookie($time_cookie, $time_value, $expiration);
+
+        header("Location: klientu_reg.php");
+    }
+     ?>
+    <script src="../js/main.js" type="text/javascript"></script>
     </body>
 </html>
