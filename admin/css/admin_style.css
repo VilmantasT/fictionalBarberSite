@@ -215,3 +215,23 @@ body {
   padding: 0.75rem;
   color: #666;
 }
+
+/* message */
+
+.message{
+    color: #3197e0;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+
+}
+
+.message-btn{
+    display: inline-block;
+    background: #3197e0;
+    padding: 0.25rem;
+    border: 1px solid #3197e0;
+    color: #fff;
+    border-radius: 5px;
+
+}

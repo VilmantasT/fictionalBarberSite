@@ -1,4 +1,33 @@
 <?php
+function getVisitsCount($username, $surname){
+    global $connection;
+
+    $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";
+
+    $visit_query = mysqli_query($connection, $get_visit);
+    $result = mysqli_fetch_assoc($visit_query);
+    return $result['visits'];
+}
+
+ ?>
+<?php
+function cookieMessage(){
+
+    if (isset($_COOKIE["userName"])) {
+        $cookieId = $_COOKIE['userId'];
+        $cookieName = $_COOKIE['userName'];
+        $cookieSurname = $_COOKIE['userSurname'];
+        $cookieDate = $_COOKIE["visitDate"];
+        $cookieTime = $_COOKIE["visitTime"];
+
+        echo "Jūs jau esate užsiregistravęs: " . $cookieDate . " | " . $cookieTime . " <a class='message-btn' onClick=\"javacript: return confirm('Tikrai norite trinti?'); \" href='klientu_reg.php?delete=$cookieId&n=$cookieName&s=$cookieSurname'>Trinti</a>";
+
+    }
+}
+
+ ?>
+
+<?php
 function deleteReservation($id, $name, $surname){
     global $connection;
 
@@ -6,7 +35,7 @@ function deleteReservation($id, $name, $surname){
 
     $delete_query = mysqli_query($connection, $query);
 
-    $subtract_visit = "UPDATE klientai SET visits = visits - 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
+    $subtract_visit = "UPDATE klientai SET visits = visits - 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' AND visit >= 1 ";
 
     $subtract_query = mysqli_query($connection, $subtract_visit);
 
@@ -104,7 +133,7 @@ function displayTimes($array){
         $time = $row['res_time'];
         $employer = $row['worker'];
 
-        if ($visits % 5 == 0) {
+        if ($visits % 5 == 0 && $visits != 0) {
             $discount = "<td class='yes'><i class='fas fa-check'></i></td>";
         }else{
             $discount = "<td><i class='fas fa-times'></i></td>";
@@ -118,7 +147,7 @@ function displayTimes($array){
         echo"<td>$time</td>";
         echo"<td>$employer</td>";
         echo $discount;
-        echo"<td> <a href='index.php?delete=$id&n=$name&s=$surname'><i class='fas fa-trash-alt'></i></a></td>";
+        echo"<td> <a onClick=\"javacript: return confirm('Tikrai norite trinti?'); \" href='index.php?delete=$id&n=$name&s=$surname'><i class='fas fa-trash-alt'></i></a></td>";
         echo"</tr>";
 
     }}
@@ -152,7 +181,6 @@ function updateVisitsCount($name, $surname){
         // updates client visits count by one if he is in db
         $update_query = "UPDATE klientai SET visits = visits + 1 WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
         $update = mysqli_query($connection, $update_query);
-            die(mysqli_error($connection));
         }
     }
 

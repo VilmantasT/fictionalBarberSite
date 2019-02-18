@@ -21,7 +21,7 @@
                     $date = $_SESSION['date'];
                     $worker = $_SESSION['worker'];
 
-                    // check if client has active registration in SQLiteDatabase
+                    // check if client has active registration in Database
 
                     $check_reserv = "SELECT * FROM registracijos WHERE client_name = '$username' AND client_surname = '$surname' ";
 
@@ -44,16 +44,12 @@
 
 
                         // gets client visits count from klientai db
-                        $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";
-
-                        $visit_query = mysqli_query($connection, $get_visit);
-                        $result = mysqli_fetch_assoc($visit_query);
-                        $visit = $result['visits'];
+                        $visits = getVisitsCount($username, $surname);
 
                         // resgistration query
 
                         $query = "INSERT INTO registracijos (visits, client_name, client_surname, res_date, res_time, worker) ";
-                        $query .= "VALUES ('$visit', '$username', '$surname', '$date', '$time', '$worker')";
+                        $query .= "VALUES ('$visits', '$username', '$surname', '$date', '$time', '$worker')";
 
                         $reg_query = mysqli_query($connection, $query);
 
@@ -63,7 +59,7 @@
 
                         echo "<p class='message'>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
                     }else{
-                        echo "<p class='message'>" . $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href=''>Trinti</a></p>";
+                        echo "<p class='message'>" . $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a class='message-btn' href=''>Trinti</a></p>";
                     }
                 }
 

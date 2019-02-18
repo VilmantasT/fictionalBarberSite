@@ -11,24 +11,11 @@
             <li><a href="index.php">Atgal</a></li>
         </ul>
 </nav>
-<div id='message'>
+<div class='message'>
 
     <?php
 
-
-    if (isset($_COOKIE["userName"])) {
-        $cookieId = $_COOKIE['userId'];
-        $cookieName = $_COOKIE['userName'];
-        $cookieSurname = $_COOKIE['userSurname'];
-        $cookieDate = $_COOKIE["visitDate"];
-        $cookieTime = $_COOKIE["visitTime"];
-
-        echo "Jūs jau esate užsiregistravęs: " . $cookieDate . " | " . $cookieTime . " <a href='klientu_reg.php?delete=$cookieId&n=$cookieName&s=$cookieSurname'>Trinti</a>";
-
-        }else {
-        $someOne = "";
-        }
-
+    cookieMessage();
      ?>
 
 
@@ -68,11 +55,8 @@
                         updateVisitsCount($username, $surname);
 
                         // gets client visits count from klientai db
-                        $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";
 
-                        $visit_query = mysqli_query($connection, $get_visit);
-                        $result = mysqli_fetch_assoc($visit_query);
-                        $visits = $result['visits'];
+                        $visits = getVisitsCount($username, $surname);
 
                         // resgistration query
 
@@ -121,14 +105,12 @@
                             $_SESSION['username'] = $name;
                             $_SESSION['surname'] = $surname;
                             $_SESSION['date'] = $date;
-                            $_SESSION['laikai'] = [];
-                            $_SESSION['workers'] = [];
 
                             echo "<form action='klientu_reg.php' method='post'>";
                             echo "<table class='book-times'>";
-                            $_SESSION['workers'] = getWorkers();
+                            $workers= getWorkers();
 
-                            foreach ($_SESSION['workers'] as $worker) {
+                            foreach ($workers as $worker) {
                                 echo "<tr>";
                                 $booked = getBooked($worker, $_SESSION['date']);
                                 displayTimesUsers($booked, $worker);
@@ -179,13 +161,11 @@
         $name = $_GET['n'];
         $surname = $_GET['s'];
 
-
-
         deleteReservation($the_id, $name, $surname);
 
         header("Location: klientu_reg.php");
     }
      ?>
-    <script src="../js/main.js" type="text/javascript"></script>
+    <!-- <script src="../js/main.js" type="text/javascript"></script> -->
     </body>
 </html>

@@ -13,8 +13,16 @@
                     <li><a href="admin">Darbuotojams</a></li>
                 </ul>
         </nav>
+        <div class="message">
 
+            <?php
+
+            cookieMessage();
+
+            ?>
+        </div>
         <header id="showcase">
+
 
             <div class="showcase-content">
 

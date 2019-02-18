@@ -51,7 +51,6 @@ p {
   z-index: 1;
   padding: 1rem;
   background: #fff;
-  border-bottom: 1px solid #ddd;
 }
 
 #navigation ul {
@@ -188,4 +187,23 @@ margin-bottom: 1rem;
 
 .reg-form .form-groups form .btn{
     margin-top: 1rem;
+}
+
+/* message */
+
+.message{
+    color: #ff6633;
+    text-align: center;
+    font-size: 1.5rem;
+
+}
+
+.message-btn{
+    display: inline-block;
+    background: #ff6633;
+    padding: 0.25rem;
+    border: 1px solid #ff6633;
+    color: #fff;
+    border-radius: 5px;
+
 }
