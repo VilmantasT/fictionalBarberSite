@@ -26,13 +26,16 @@
 
                 <?php
                 if (isset($_POST['reserve'])) {
-                    $time = $_POST['time'];
-                    $username = $_SESSION['username'];
-                    $username = ucfirst($username);
-                    $surname = $_SESSION['surname'];
-                    $surname = ucfirst($surname);
-                    $date = $_SESSION['date'];
-                    $worker = $_POST['worker'];
+                    if (!empty($time) && !empty($worker)) {
+                        $time = $_POST['time'];
+                        $username = $_SESSION['username'];
+                        $username = ucfirst($username);
+                        $surname = $_SESSION['surname'];
+                        $surname = ucfirst($surname);
+                        $date = $_SESSION['date'];
+                        $worker = $_POST['worker'];
+
+
 
                     // check if client has active registration in SQLiteDatabase
 
@@ -86,7 +89,11 @@
 
                         printClientForm($message);
                     }
-                }
+                }else{
+                    $_SESSION['registered'] = true;
+                    $message = "<h3 class='message'>Pasirinkite darbuotoją ir laiką!</h3>";
+                    printClientForm($message);
+                }}
 
                  ?>
                 <?php
