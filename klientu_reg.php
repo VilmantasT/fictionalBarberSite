@@ -11,17 +11,18 @@
             <li><a href="index.php">Atgal</a></li>
         </ul>
 </nav>
+
 <div class='message'>
 
     <?php
 
     cookieMessage();
+
      ?>
 
-
 </div>
-    <div class="container-reg">
 
+    <div class="container-reg">
 
                 <?php
                 if (isset($_POST['reserve'])) {
@@ -58,25 +59,14 @@
 
                         $visits = getVisitsCount($username, $surname);
 
-                        // resgistration query
+                        // reserve a visit in registracijos table
 
-                        $query = "INSERT INTO registracijos (visits, client_name, client_surname, res_date, res_time, worker) ";
-                        $query .= "VALUES ('$visits', '$username', '$surname', '$date', '$time', '$worker')";
+                        reserveVisit($visits, $username, $surname, $date, $time, $worker);
 
-                        $reg_query = mysqli_query($connection, $query);
+                        // get id of reserved visit for get delete option
 
-                        if (!$reg_query) {
-                            die(mysqli_error($connection));
-                        }
-                        // get id for get delete assert_options
-
-                        $get_id = "SELECT * FROM registracijos WHERE client_name = '$username' AND client_surname = '$surname' ";
-
-                        $id_query = mysqli_query($connection, $get_id);
-                        $id_data = mysqli_fetch_assoc($id_query);
-
-                        $res_id = $id_data['id'];
-
+                        $res_id = getId($username, $surname);
+                        echo $res_id;
                         // set cookies
 
                         setcookie("userId", $res_id, time() + (60*60*24*7), "/");
@@ -85,7 +75,7 @@
                         setcookie("visitDate", $date, time() + (60*60*24*7), "/");
                         setcookie("visitTime", $time, time() + (60*60*24*7), "/");
 
-                        echo "<p>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
+                        echo "<p>Sėkmingai užsiregistruota " . $date . " dienai " . $time. " valandai</p>";
 
                     }else{
                         echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href='klientu_reg.php'>Trinti</a>";
@@ -127,13 +117,15 @@
                         }
 
                     }else{
-                        echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
+                        echo '<script> showMessage("message"); </script>';
+                        // echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
                     }
                 }else{ ?>
 
             <div class="reg-form">
                 <div class="form-groups">
                     <h2>Rezervuoti</h2>
+                    <p id="message"></p>
                     <form class="" action="klientu_reg.php" method="post">
                         <label for="date">Vardas</label>
                         <input type="text" name="name" value="" placeholder="Jusu vardas">
@@ -166,6 +158,7 @@
         header("Location: klientu_reg.php");
     }
      ?>
-    <!-- <script src="../js/main.js" type="text/javascript"></script> -->
+
     </body>
+     <script src="js/main.js" charset="utf-8"></script>
 </html>

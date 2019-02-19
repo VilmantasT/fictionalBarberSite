@@ -1,5 +1,89 @@
 <?php
+function printAdminReg($message){
+    echo "<div class='reg_form'>
+        <h2>Rezervuoti</h2>
+        <div class='form-groups'>
+            <h3 class='message'>$message</h3>
+            <form class='' action='add_reg.php' method='post'>
+                <label for='date'>Vardas</label>
+                <input type='text' name='name' value='' placeholder='Jusu vardas'>
+
+                <label for='date'>Pavarde</label>
+                <input type='text' name='surname' value='' placeholder='Jusu pavarde'>
+
+                <label for='date'>Data</label>
+                <input type='date' name='date' value=''>
+
+                <label for='worker'>Kirpėja</label>
+                <select class='' name='worker' id='worker'>
+                ";
+
+
+                    // finds hairdressers names in db and displays as options
+                    $kirpejos = getWorkers();
+
+                    foreach ($kirpejos as $name) {
+                        echo "<option value='$name'>$name</option>";
+                    }
+
+                echo "</select>
+                <input class='btn' type='submit' name='testi' value='Tęsti'>
+            </form>
+            </div>
+
+            </div>";
+}
+
+
+ ?>
+
+
+
+<?php
+
+function reserveVisit($visits, $username, $surname, $date, $time, $worker){
+
+    // saves visit info into 'registracijos' table
+
+    global $connection;
+
+    $query = "INSERT INTO registracijos (visits, client_name, client_surname, res_date, res_time, worker) ";
+    $query .= "VALUES ('$visits', '$username', '$surname', '$date', '$time', '$worker')";
+
+    $reg_query = mysqli_query($connection, $query);
+
+    if (!$reg_query) {
+        die(mysqli_error($connection));
+    }
+}
+ ?>
+
+<?php
+
+function getId($username, $surname){
+    // return id of reservation where username and surname is like function
+    // arguments. ID is used saved into cookies and used to delete a reservation
+    // when user come back to site later
+
+    global $connection;
+
+    $get_id = "SELECT * FROM registracijos WHERE client_name = '$username' AND client_surname = '$surname' ";
+
+    $id_query = mysqli_query($connection, $get_id);
+    $id_data = mysqli_fetch_assoc($id_query);
+
+    return $id_data['id'];
+
+}
+
+ ?>
+
+<?php
 function getVisitsCount($username, $surname){
+    // returns the number of visits client have registered in 'klientai'
+    // database. This number is used to calculate clients ability to get
+    // a discount
+
     global $connection;
 
     $get_visit = "SELECT visits FROM klientai WHERE client_name = '$username' AND client_surname = '$surname'";

@@ -48,21 +48,29 @@
 
                         // resgistration query
 
-                        $query = "INSERT INTO registracijos (visits, client_name, client_surname, res_date, res_time, worker) ";
-                        $query .= "VALUES ('$visits', '$username', '$surname', '$date', '$time', '$worker')";
+                        reserveVisit($visits, $username, $surname, $date, $time, $worker);
 
-                        $reg_query = mysqli_query($connection, $query);
 
-                        if (!$reg_query) {
-                            die(mysqli_error($connection));
-                        }
+                        // get id of reserved visit for get delete option
 
-                        echo "<p class='message'>Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai</p>";
+                        $res_id = getId($username, $surname);
+                        // set cookies
+
+                        setcookie("userId", $res_id, time() + (60*60*24*7), "/");
+                        setcookie("userName", $username, time() + (60*60*24*7), "/");
+                        setcookie("userSurname", $surname, time() + (60*60*24*7), "/");
+                        setcookie("visitDate", $date, time() + (60*60*24*7), "/");
+                        setcookie("visitTime", $time, time() + (60*60*24*7), "/");
+
+                        $message = "Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai";
+
+                        printAdminReg($message);
                     }else{
-                        echo "<p class='message'>" . $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a class='message-btn' href=''>Trinti</a></p>";
+                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a class='message-btn' href=''>Trinti</a></p>";
+
+                        // printAdminReg($message);
                     }
                 }
-
                  ?>
                 <?php
                 if (isset($_POST['testi'])) {
@@ -77,59 +85,29 @@
                             $_SESSION['surname'] = $surname;
                             $_SESSION['date'] = $date;
                             $_SESSION['worker'] = $worker;
-                            $_SESSION['laikai'] = [];
-
-                            $query = "SELECT res_time FROM registracijos WHERE res_date = '$date' AND worker = '$worker'";
-
-                            $time_query = mysqli_query($connection, $query);
-
-                            while ($row = mysqli_fetch_array($time_query)) {
-                                array_push($_SESSION['laikai'], $row['res_time']);
-                            }
+                            $_SESSION['laikai'] = getBooked($worker, $date);
 
                             displayTimes($_SESSION['laikai']);
                         }else{
-                            echo "<p class='message'>Atsiprašome , tačiau neturime laiko mašinos</p>";
+                            $message = "Atsiprašome, tačiau neturime laiko mašinos";
+
+                            printAdminReg($message);
                         }
 
                     }else{
-                        echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
+                        $message = "Privalote užpildyti visus laukelius!";
+
+                        printAdminReg($message);
                     }
-                }else{ ?>
+                }else{
 
-            <div class="reg_form">
-                <h2>Rezervuoti</h2>
-                <div class="form-groups">
-                    <form class="" action="add_reg.php" method="post">
-                        <label for="date">Vardas</label>
-                        <input type="text" name="name" value="" placeholder="Jusu vardas">
+                    $message = '';
 
-                        <label for="date">Pavarde</label>
-                        <input type="text" name="surname" value="" placeholder="Jusu pavarde">
+                    printAdminReg($message);
+                }
 
-                        <label for="date">Data</label>
-                        <input type="date" name="date" value="">
-
-                        <label for="worker">Kirpėja</label>
-                        <select class="" name="worker" id="worker">
-
-                            <?php
-
-                            // finds hairdressers names in db and displays as options
-                            $kirpejos = getWorkers();
-
-                            foreach ($kirpejos as $name) {
-                                echo "<option value='$name'>$name</option>";
-                            }
-
-                             ?>
-                        </select>
-                        <input class="btn" type="submit" name="testi" value="Tęsti">
-                    </form>
+                    ?>
     </div>
-    </div>
-                    <?php } ?>
 
-    </div>
     </body>
 </html>
