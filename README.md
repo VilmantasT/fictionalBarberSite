@@ -22,7 +22,7 @@ Visits to hairdressers can be booked  two ways: 1. first option is from index pa
 1.Index page registration:
   1. Push "Registruokis" button,
   2. In form you must to enter your name, surname and favourable day to visit. After that push button "Tęsti",
-  3. Then you must to choose on of employees and take time from the same row as employee name and push "Rezervuoti",
+  3. Then you must to choose one of employees and take time from the same row as employee name and push "Rezervuoti",
   4. After that cookie will be created in you browser. If you came back to site later you will be able to see your visit info 
      and delete booked visit if you changed your mind.
      
