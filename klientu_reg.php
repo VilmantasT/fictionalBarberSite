@@ -75,10 +75,16 @@
                         setcookie("visitDate", $date, time() + (60*60*24*7), "/");
                         setcookie("visitTime", $time, time() + (60*60*24*7), "/");
 
-                        echo "<p>Sėkmingai užsiregistruota " . $date . " dienai " . $time. " valandai</p>";
+                        $message = "Sėkmingai užsiregistruota " . $date . " dienai " . $time. " valandai";
+
+                        $_SESSION['registered'] = true;
+
+                        printClientForm($message);
 
                     }else{
-                        echo $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href='klientu_reg.php'>Trinti</a>";
+                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href='klientu_reg.php'>Trinti</a>";
+
+                        printClientForm($message);
                     }
                 }
 
@@ -113,34 +119,26 @@
                             echo "</form>";
 
                         }else{
-                            echo "<p class='message'>Atsiprašome , tačiau neturime laiko mašinos</p>";
+                            $message = "Atsiprašome , tačiau neturime laiko mašinos";
+
+                            printClientForm($message);
                         }
 
                     }else{
-                        echo '<script> showMessage("message"); </script>';
-                        // echo "<p class='message'>Privalote užpildyti visus laukelius!</p>";
+
+                        $message = "Privalote užpildyti visus laukelius!";
+
+                        printClientForm($message);
                     }
-                }else{ ?>
+                }else{
+                    if (!$_SESSION['registered']) {
+                        $message = '';
 
-            <div class="reg-form">
-                <div class="form-groups">
-                    <h2>Rezervuoti</h2>
-                    <p id="message"></p>
-                    <form class="" action="klientu_reg.php" method="post">
-                        <label for="date">Vardas</label>
-                        <input type="text" name="name" value="" placeholder="Jusu vardas">
+                        printClientForm($message);
+                    }
 
-                        <label for="date">Pavarde</label>
-                        <input type="text" name="surname" value="" placeholder="Jusu pavarde">
 
-                        <label for="date">Data</label>
-                        <input type="date" name="date" value="">
-
-                        <input class="btn" type="submit" name="testi" value="Tęsti">
-                    </form>
-            </div>
-            </div>
-                    <?php } ?>
+                    } ?>
 
     </div>
     <?php
@@ -160,5 +158,5 @@
      ?>
 
     </body>
-     <script src="js/main.js" charset="utf-8"></script>
+
 </html>

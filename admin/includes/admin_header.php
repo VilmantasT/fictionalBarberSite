@@ -1,5 +1,6 @@
 <?php include "db.php" ?>
 <?php include "./functions.php" ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="lt" dir="ltr">
     <head>

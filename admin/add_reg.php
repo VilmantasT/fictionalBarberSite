@@ -1,5 +1,5 @@
 <?php include "includes/admin_header.php" ?>
-<?php session_start() ?>
+
 <nav id="navigation">
     <h1 class="logo">
         <i class="fas fa-cut"></i> KX
@@ -62,13 +62,15 @@
                         setcookie("visitDate", $date, time() + (60*60*24*7), "/");
                         setcookie("visitTime", $time, time() + (60*60*24*7), "/");
 
-                        $message = "Jūs sėkmingai užsiregistravote " . $date . " dienai " . $time. " valandai";
+                        $message = "Užregistruota " . $date . " dienai " . $time. " valandai";
+
+                        $_SESSION['registered'] = true;
 
                         printAdminReg($message);
                     }else{
                         $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a class='message-btn' href=''>Trinti</a></p>";
 
-                        // printAdminReg($message);
+                        printAdminReg($message);
                     }
                 }
                  ?>
@@ -100,12 +102,12 @@
                         printAdminReg($message);
                     }
                 }else{
+                    if (!$_SESSION['registered']) {
+                        $message = '';
 
-                    $message = '';
-
-                    printAdminReg($message);
+                        printAdminReg($message);
+                    }
                 }
-
                     ?>
     </div>
 

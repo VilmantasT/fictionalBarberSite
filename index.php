@@ -2,7 +2,11 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+        <?php
 
+        $_SESSION['registered'] = false;
+        
+         ?>
         <nav id="navigation">
             <h1 class="logo">
                 <i class="fas fa-cut"></i> KX

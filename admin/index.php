@@ -1,5 +1,11 @@
 <?php include "includes/admin_header.php" ?>
 
+<?php
+
+$_SESSION['registered'] = false;
+
+ ?>
+
 <nav id="navigation">
     <h1 class="logo">
         <i class="fas fa-cut"></i> KX
@@ -36,9 +42,6 @@
 
     </div>
 
-
-
-
              <table class="visits">
                  <thead>
                      <th>Vizitai</th>
@@ -56,7 +59,6 @@
                 updateReservations();
                 // displays visits based on selected condition
                 displayVisits();
-
             ?>
          </table>
 </div>

@@ -1,4 +1,29 @@
 <?php
+function printClientForm($message){
+
+    echo "<div class='reg-form'>
+        <div class='form-groups'>
+            <h2>Rezervuoti</h2>
+            <h3 class='message'>$message</h3>
+            <form class='' action='klientu_reg.php' method='post'>
+                <label for='date'>Vardas</label>
+                <input type='text' name='name' value='' placeholder='Jusu vardas'>
+
+                <label for='date'>Pavarde</label>
+                <input type='text' name='surname' value='' placeholder='Jusu pavarde'>
+
+                <label for='date'>Data</label>
+                <input type='date' name='date' value=''>
+
+                <input class='btn' type='submit' name='testi' value='Tęsti'>
+            </form>
+    </div>
+    </div>";
+
+}
+ ?>
+
+<?php
 function printAdminReg($message){
     echo "<div class='reg_form'>
         <h2>Rezervuoti</h2>
@@ -33,11 +58,7 @@ function printAdminReg($message){
 
             </div>";
 }
-
-
  ?>
-
-
 
 <?php
 
@@ -128,10 +149,7 @@ function deleteReservation($id, $name, $surname){
     setcookie('userSurname', '', time() - 1, '/');
     setcookie('visitDate', '', time() - 1, '/');
     setcookie('visitTime', '', time() - 1, '/');
-
-
 }
-
  ?>
 <?php
 function updateReservations(){
@@ -267,8 +285,6 @@ function updateVisitsCount($name, $surname){
         $update = mysqli_query($connection, $update_query);
         }
     }
-
-
  ?>
  <?php
 
