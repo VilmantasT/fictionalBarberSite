@@ -80,6 +80,7 @@
                     $surname = $_POST['surname'];
                     $date = $_POST['date'];
                     $worker = $_POST['worker'];
+                    
                     if (!empty($name) && !empty($surname) && !empty($date) && !empty($worker)) {
                         if ($date >= date("Y-m-d", time())) {
 
@@ -89,6 +90,7 @@
                             $_SESSION['worker'] = $worker;
                             $_SESSION['laikai'] = getBooked($worker, $date);
 
+                            // echoes free times for specific worker and date
                             displayTimes($_SESSION['laikai']);
                         }else{
                             $message = "Atsiprašome, tačiau neturime laiko mašinos";

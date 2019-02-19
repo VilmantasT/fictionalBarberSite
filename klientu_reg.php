@@ -13,7 +13,7 @@
 </nav>
 
 <div class='message'>
-
+    <!-- prints message about booked visit if cookie was set -->
     <?php
 
     cookieMessage();
@@ -69,7 +69,6 @@
                         // get id of reserved visit for get delete option
 
                         $res_id = getId($username, $surname);
-                        echo $res_id;
                         // set cookies
 
                         setcookie("userId", $res_id, time() + (60*60*24*7), "/");
@@ -112,11 +111,16 @@
                             echo "<form action='klientu_reg.php' method='post'>";
                             echo "<table class='book-times'>";
 
+                            // gets all workers from database
                             $workers= getWorkers();
 
                             foreach ($workers as $worker) {
                                 echo "<tr>";
+
+                                // takes all booked times for specific worker and date
                                 $booked = getBooked($worker, $_SESSION['date']);
+
+                                // displays table of free times of each worker
                                 displayTimesUsers($booked, $worker);
                                 echo "</tr>";
 

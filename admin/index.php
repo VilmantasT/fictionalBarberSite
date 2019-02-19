@@ -75,8 +75,6 @@ if (isset($_GET['delete'])) {
 
     deleteReservation($the_id, $name, $surname);
 
-    // echo "Registracija sekmingai istrinta!";
-
     header("Location: index.php");
 }
  ?>

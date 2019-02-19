@@ -5,7 +5,7 @@
         <?php
 
         $_SESSION['registered'] = false;
-        
+
          ?>
         <nav id="navigation">
             <h1 class="logo">
@@ -18,7 +18,7 @@
                 </ul>
         </nav>
         <div class="message">
-
+            prints message about booked visit if cookie was set
             <?php
 
             cookieMessage();
