@@ -1,6 +1,8 @@
 <?php
 function printClientForm($message){
 
+    // prints clients registration form with given message.
+
     echo "<div class='reg-form'>
         <div class='form-groups'>
             <h2>Rezervuoti</h2>
@@ -25,6 +27,9 @@ function printClientForm($message){
 
 <?php
 function printAdminReg($message){
+
+    // prints administration registration form with given message
+
     echo "<div class='reg_form'>
         <h2>Rezervuoti</h2>
         <div class='form-groups'>
@@ -82,6 +87,7 @@ function reserveVisit($visits, $username, $surname, $date, $time, $worker){
 <?php
 
 function getId($username, $surname){
+
     // return id of reservation where username and surname is like function
     // arguments. ID is used saved into cookies and used to delete a reservation
     // when user come back to site later
@@ -101,6 +107,7 @@ function getId($username, $surname){
 
 <?php
 function getVisitsCount($username, $surname){
+
     // returns the number of visits client have registered in 'klientai'
     // database. This number is used to calculate clients ability to get
     // a discount
@@ -118,6 +125,8 @@ function getVisitsCount($username, $surname){
 <?php
 function cookieMessage(){
 
+    // prints message about clients registered visit from saved cookies
+
     if (isset($_COOKIE["userName"])) {
         $cookieId = $_COOKIE['userId'];
         $cookieName = $_COOKIE['userName'];
@@ -134,7 +143,12 @@ function cookieMessage(){
 
 <?php
 function deleteReservation($id, $name, $surname){
+
+    // deletes reservation info from registracijos table and updates visits count
+
     global $connection;
+
+    $today = date("Y-m-d", time());
 
     $query = "DELETE FROM registracijos WHERE id = $id";
 
@@ -153,6 +167,9 @@ function deleteReservation($id, $name, $surname){
  ?>
 <?php
 function updateReservations(){
+
+    // deletes all reservations which are older than today
+
     global $connection;
     $today = date("Y-m-d", time());
 
@@ -167,6 +184,9 @@ function updateReservations(){
  ?>
 <?php
 function displayTimes($array){
+
+    // displays all unbookded times for the particular hairdresser
+
     $times = [10.00, 10.15, 10.30, 10.45, 11.00, 11.15, 11.30, 11.45, 12.00, 12.15, 12.30, 12.45, 13.00, 13.15, 13.30, 13.45, 14.00, 14.15, 14.30, 14.45, 15.00, 15.15, 15.30, 15.45, 16.00, 16.15, 16.30, 16.45, 17.00, 17.15, 17.30, 17.45, 18.00, 18.15, 18.30, 18.45, 19.00, 19.15, 19.30, 19.45];
 
     echo "<table class='time_table'>";
@@ -187,6 +207,9 @@ function displayTimes($array){
  ?>
  <?php
  function displayVisits(){
+
+     // displays all up to date registered visits in admin index.php page
+
      global $connection;
 
      if (isset($_POST['today'])) {
@@ -258,10 +281,12 @@ function displayTimes($array){
 <?php
 
 function updateVisitsCount($name, $surname){
-    global $connection;
 
     // checks if client is in db, if yes updates clients visits Count
     // if no adds client to db and adds one to visits count
+
+    global $connection;
+
 
     $check_query = "SELECT * FROM klientai WHERE client_name LIKE '$name' AND client_surname LIKE '$surname' ";
     $check = mysqli_query($connection, $check_query);
@@ -289,6 +314,10 @@ function updateVisitsCount($name, $surname){
  <?php
 
  function getBooked($worker, $date){
+
+     // get all booked times for specific hairdresser and time from database
+     // and returns array of that times
+
      global $connection;
 
      $booked = [];
@@ -307,6 +336,10 @@ function updateVisitsCount($name, $surname){
   <?php
 
   function getWorkers(){
+
+      // gets all hairdressers from database and puts them in array and returns
+      // array
+
       global $connection;
 
       $workers = [];
@@ -329,6 +362,9 @@ function updateVisitsCount($name, $surname){
    <?php
 
    function displayTimesUsers($array, $worker){
+
+       // prints table of free times for each hairdresser
+
        $times = [10.00, 10.15, 10.30, 10.45, 11.00, 11.15, 11.30, 11.45, 12.00, 12.15, 12.30, 12.45, 13.00, 13.15, 13.30, 13.45, 14.00, 14.15, 14.30, 14.45, 15.00, 15.15, 15.30, 15.45, 16.00, 16.15, 16.30, 16.45, 17.00, 17.15, 17.30, 17.45, 18.00, 18.15, 18.30, 18.45, 19.00, 19.15, 19.30, 19.45];
 
        if (sizeof($array) != sizeof($times)) {

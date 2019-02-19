@@ -82,7 +82,7 @@
                         printClientForm($message);
 
                     }else{
-                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a href='klientu_reg.php'>Trinti</a>";
+                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time;
 
                         printClientForm($message);
                     }
@@ -104,6 +104,7 @@
 
                             echo "<form action='klientu_reg.php' method='post'>";
                             echo "<table class='book-times'>";
+
                             $workers= getWorkers();
 
                             foreach ($workers as $worker) {
@@ -119,7 +120,7 @@
                             echo "</form>";
 
                         }else{
-                            $message = "Atsiprašome , tačiau neturime laiko mašinos";
+                            $message = "Atsiprašome, tačiau neturime laiko mašinos";
 
                             printClientForm($message);
                         }

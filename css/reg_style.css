@@ -9,7 +9,7 @@
 body {
   font-family: Arial, Verdana, sans-serif;
   line-height: 1.4;
-  /* background: #333 url('../img/blond_hair.jpg') no-repeat center center/cover; */
+
 }
 
 a {
@@ -79,7 +79,7 @@ p {
   max-width: 100%;
   background: #fff;
   height: 100vh;
-  background: #333 url("../img/barber.jpg") no-repeat center center/cover;
+  background: #333 url("../img/beauty.jpg") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,7 +115,7 @@ td {
   font-size: 0.65rem;
   font-weight: bolder;
   text-align: center;
-  padding: 0.35rem;
+  padding: 0.25rem;
 
 }
 

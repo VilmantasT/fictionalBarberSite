@@ -68,7 +68,7 @@
 
                         printAdminReg($message);
                     }else{
-                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time . " <a class='message-btn' href=''>Trinti</a></p>";
+                        $message = $res_name . " " . $res_surname . " jau rezervavęs vizitą: " . $res_date . " " . $res_time;
 
                         printAdminReg($message);
                     }
