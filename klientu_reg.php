@@ -26,7 +26,7 @@
 
                 <?php
                 if (isset($_POST['reserve'])) {
-                    if (!empty($time) && !empty($worker)) {
+                    if (isset($_POST['time']) && isset($_POST['worker'])) {
                         $time = $_POST['time'];
                         $username = $_SESSION['username'];
                         $username = ucfirst($username);
